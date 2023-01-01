@@ -1,5 +1,5 @@
 /**
- * 该类是“World-of-Zuul”应用程序的主类。
+ * {@code Game}类是“World-of-Zuul”应用程序的主类。
  * 《World of Zuul》是一款简单的文本冒险游戏。用户可以在一些房间组成的迷宫中探险。
  * 你们可以通过扩展该游戏的功能使它更有趣!.
  *
@@ -8,7 +8,7 @@
  * Game类的实例将创建并初始化所有其他类:它创建所有房间，并将它们连接成迷宫；它创建解析器
  * 接收用户输入，并将用户输入转换成命令后开始运行游戏。
  *
- * @author  Michael Kölling and David J. Barnes
+ * @author Michael Kölling and David J. Barnes
  * @version 1.0
  */
 package cn.edu.whut.sept.zuul;
@@ -19,7 +19,7 @@ public class Game
     private Room currentRoom;
 
     /**
-     * 创建游戏并初始化内部数据和解析器.
+     * 构造函数，创建游戏并初始化内部数据和解析器.
      */
     public Game()
     {
@@ -92,7 +92,7 @@ public class Game
     /**
      * 执行用户输入的游戏指令.
      * @param command 待处理的游戏指令，由解析器从用户输入内容生成.
-     * @return 如果执行的是游戏结束指令，则返回true，否则返回false.
+     * @return 如果执行的是游戏结束指令，则返回 {@code true}，否则返回 {@code false}.
      */
     private boolean processCommand(Command command)
     {
@@ -135,6 +135,7 @@ public class Game
     /**
      * 执行go指令，向房间的指定方向出口移动，如果该出口连接了另一个房间，则会进入该房间，
      * 否则打印输出错误提示信息.
+     * @param command 待处理的游戏指令，由解析器从用户输入内容生成.
      */
     private void goRoom(Command command)
     {
@@ -160,7 +161,7 @@ public class Game
 
     /**
      * 执行Quit指令，用户退出游戏。如果用户在命令中输入了其他参数，则进一步询问用户是否真的退出.
-     * @return 如果游戏需要退出则返回true，否则返回false.
+     * @return 如果游戏需要退出则返回 {@code true}，否则返回 {@code false}.
      */
     private boolean quit(Command command)
     {
