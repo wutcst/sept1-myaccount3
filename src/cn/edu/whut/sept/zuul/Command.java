@@ -1,9 +1,8 @@
+package cn.edu.whut.sept.zuul;
+
 /**
  * {@code Command}类用来存储用户输入的指令。
  */
-
-package cn.edu.whut.sept.zuul;
-
 public class Command
 {
     /** 用户输入指令的第一个单词 */

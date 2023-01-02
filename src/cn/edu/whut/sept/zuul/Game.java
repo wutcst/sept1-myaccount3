@@ -1,3 +1,7 @@
+package cn.edu.whut.sept.zuul;
+
+import java.util.HashMap;
+
 /**
  * {@code Game}类是“World-of-Zuul”应用程序的主类。
  * 《World of Zuul》是一款简单的文本冒险游戏。用户可以在一些房间组成的迷宫中探险。
@@ -9,10 +13,6 @@
  * @author Michael Kölling and David J. Barnes
  * @version 1.0
  */
-package cn.edu.whut.sept.zuul;
-
-import java.util.HashMap;
-
 public class Game
 {
     private final Parser parser;

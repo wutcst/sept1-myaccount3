@@ -1,17 +1,15 @@
-/**
- * {@code CommandWords}类保存所有有效的指令字符串，并提供判断指令有效性、显示索引指令的方法。
- */
-
 package cn.edu.whut.sept.zuul;
 
 import java.util.HashMap;
 
+/**
+ * {@code CommandWords}类保存所有有效的指令字符串，并提供判断指令有效性、显示索引指令的方法。
+ */
 public class CommandWords
 {
     /** 有效的指令字符串及其处理类 */
     private static final HashMap<String, CommandProcessor> commandProcessorHashMap
             = Main.currentGame.getCommandProcessorHashMap();
-
 
     /**
      * 判断指令的有效性。
@@ -30,7 +28,7 @@ public class CommandWords
     }
 
     /**
-     * 显示所有有效的指令字符串
+     * 显示所有有效的指令字符串。
      */
     public static void showAll()
     {

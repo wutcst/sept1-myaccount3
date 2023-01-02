@@ -1,12 +1,11 @@
-/**
- * {@code Room}类用来保存程序中用到的各个房间的相关信息。
- */
-
 package cn.edu.whut.sept.zuul;
 
 import java.util.Set;
 import java.util.HashMap;
 
+/**
+ * {@code Room}类用来保存程序中用到的各个房间的相关信息。
+ */
 public class Room
 {
     /** {@code Room}类对象的描述信息 */

@@ -1,11 +1,10 @@
-/**
- * {@code Parser}类接收用户输入，并对用户输入进行分析。
- */
-
 package cn.edu.whut.sept.zuul;
 
 import java.util.Scanner;
 
+/**
+ * {@code Parser}类接收用户输入，并对用户输入进行分析。
+ */
 public class Parser
 {
 //    /** 有效指令 */
