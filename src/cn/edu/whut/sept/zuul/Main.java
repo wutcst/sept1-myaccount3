@@ -9,6 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         currentGame = new Game(); // 游戏初始化
+        currentGame.playerListInit();   // 读取已经注册的玩家
         currentGame.play();    // 启动游戏
     }
 }

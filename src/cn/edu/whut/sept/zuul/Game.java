@@ -1,5 +1,7 @@
 package cn.edu.whut.sept.zuul;
 
+import cn.edu.whut.sept.zuul.mysql.PlayerDao;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -20,7 +22,7 @@ public class Game
     private final Parser parser;
     private final HashMap<String, CommandProcessor> commandProcessorHashMap;
     private Player currentPlayer;
-    private final ArrayList<Player> playerList;
+    private ArrayList<Player> playerList;
     private Room startRoom;
 
     /**
@@ -41,7 +43,15 @@ public class Game
         commandProcessorHashMap.put("logout", new LogoutCommandProcessor());
 
         currentPlayer = null;
-        playerList = new ArrayList<>();
+        playerList = null;
+    }
+
+    /**
+     * 读取已经注册的玩家。<br></br>
+     * 将该方法放在{@code Game()}构造函数外面，避免{@code main}函数中{@code Game}对象未返回而造成{@code NullPointerException}。
+     */
+    public void playerListInit() {
+        playerList = PlayerDao.searchAllPlayers();
     }
 
     /**
@@ -287,7 +297,10 @@ public class Game
             System.out.print("password:");
             String password = scanner.nextLine();
 
-            playerList.add(new Player(name, password));
+            var player = new Player(name, password);
+            playerList.add(player);
+            PlayerDao.insertPlayer(player); // 玩家数据写入数据库
+
             System.out.println("Successfully registered!");
 
             return false;

@@ -17,6 +17,7 @@ public class Player {
 
         currentRoom = Main.currentGame.getStartRoom();
         roomList = new ArrayList<>();
+        roomList.add(Main.currentGame.getStartRoom());
     }
 
     public String getName() { return name; }
@@ -26,5 +27,6 @@ public class Player {
     public void reset() {
         currentRoom = Main.currentGame.getStartRoom();
         roomList.clear();
+        roomList.add(Main.currentGame.getStartRoom());
     }
 }
