@@ -6,9 +6,10 @@
 package cn.edu.whut.sept.zuul;
 
 public class Main {
+    public static Game currentGame;
 
     public static void main(String[] args) {
-        Game game = new Game(); // 游戏初始化
-        game.play();    // 启动游戏
+        currentGame = new Game(); // 游戏初始化
+        currentGame.play();    // 启动游戏
     }
 }

@@ -4,42 +4,37 @@
 
 package cn.edu.whut.sept.zuul;
 
+import java.util.HashMap;
+
 public class CommandWords
 {
-    /** 有效的指令字符串 */
-    private static final String[] validCommands = {
-            "go", "quit", "help"
-    };
+    /** 有效的指令字符串及其处理类 */
+    private static final HashMap<String, CommandProcessor> commandProcessorHashMap
+            = Main.currentGame.getCommandProcessorHashMap();
 
-    /**
-     * 构造函数。
-     */
-    public CommandWords()
-    {
-        // nothing to do at the moment...
-    }
 
     /**
      * 判断指令的有效性。
      * @param aString 指令字符串
      * @return 若指令有效，返回{@code true}；若指令无效，返回{@code false}。
      */
-    public boolean isCommand(String aString)
+    public static boolean isCommand(String aString)
     {
-        // 顺序查找
-        for(int i = 0; i < validCommands.length; i++) {
-            if(validCommands[i].equals(aString))
-                return true;
-        }
-        return false;
+//        // 顺序查找
+//        for(var item: validCommands) {
+//            if(item.equals(aString))
+//                return true;
+//        }
+//        return false;
+        return commandProcessorHashMap.get(aString) != null;
     }
 
     /**
      * 显示所有有效的指令字符串
      */
-    public void showAll()
+    public static void showAll()
     {
-        for(String command: validCommands) {
+        for(String command: commandProcessorHashMap.keySet()) {
             System.out.print(command + "  ");
         }
         System.out.println();

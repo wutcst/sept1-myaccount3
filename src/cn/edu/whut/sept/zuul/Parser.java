@@ -8,17 +8,17 @@ import java.util.Scanner;
 
 public class Parser
 {
-    /** 有效指令 */
-    private CommandWords commands;
+//    /** 有效指令 */
+//    private final CommandWords commands;
     /** 接收用户输入 */
-    private Scanner reader;
+    private final Scanner reader;
 
     /**
      * 构造函数。
      */
     public Parser()
     {
-        commands = new CommandWords();  // 初始化commands对象
+//        commands = new CommandWords();  // 初始化commands对象
         reader = new Scanner(System.in);    // 接收用户在控制台端的输入
     }
 
@@ -46,7 +46,7 @@ public class Parser
         }
 
         // 判断用户输入是不是合法的指令
-        if(commands.isCommand(word1)) {
+        if(CommandWords.isCommand(word1)) {
             return new Command(word1, word2);
         }
         else {
@@ -59,6 +59,6 @@ public class Parser
      */
     public void showCommands()
     {
-        commands.showAll();
+        CommandWords.showAll();
     }
 }

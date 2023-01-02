@@ -10,9 +10,9 @@ import java.util.HashMap;
 public class Room
 {
     /** {@code Room}类对象的描述信息 */
-    private String description;
+    private final String description;
     /** 该{@code Room}类对象在东、西、南、北方向的其他{@code Room}类对象 */
-    private HashMap<String, Room> exits;
+    private final HashMap<String, Room> exits;
 
     /**
      * 构造函数。
@@ -33,15 +33,15 @@ public class Room
     {
         exits.put(direction, neighbor); // 将其他Room对象及其方位加入到当前Room对象的exits中
     }
-
-    /**
-     * 返回{@code Room}类对象自身的描述信息。
-     * @return {@code Room} 类对象自身的描述信息
-     */
-    public String getShortDescription()
-    {
-        return description;
-    }
+//
+//    /**
+//     * 返回{@code Room}类对象自身的描述信息。
+//     * @return {@code Room} 类对象自身的描述信息
+//     */
+//    public String getShortDescription()
+//    {
+//        return description;
+//    }
 
     /**
      * 返回{@code Room}类对象自身的描述信息和出口信息。
@@ -58,12 +58,12 @@ public class Room
      */
     private String getExitString()
     {
-        String returnString = "Exits:";
+        StringBuilder returnStringBuilder = new StringBuilder("Exits:");
         Set<String> keys = exits.keySet();  // 获取Room类对象的所有出口方位字符串
         for(String exit : keys) {
-            returnString += " " + exit; // 将" "和keys中的字符串拼接到returnString上，以返回所有出口方位
+            returnStringBuilder.append(" ").append(exit); // 将" "和keys中的字符串拼接到returnString上，以返回所有出口方位
         }
-        return returnString;
+        return returnStringBuilder.toString();
     }
 
     /**

@@ -7,9 +7,9 @@ package cn.edu.whut.sept.zuul;
 public class Command
 {
     /** 用户输入指令的第一个单词 */
-    private String commandWord;
+    private final String commandWord;
     /** 用户输入指令的第二个单词 */
-    private String secondWord;
+    private final String secondWord;
 
     /**
      * 构造函数，创建{@code Command}对象。

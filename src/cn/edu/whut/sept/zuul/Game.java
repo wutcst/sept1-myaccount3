@@ -2,9 +2,7 @@
  * {@code Game}类是“World-of-Zuul”应用程序的主类。
  * 《World of Zuul》是一款简单的文本冒险游戏。用户可以在一些房间组成的迷宫中探险。
  * 你们可以通过扩展该游戏的功能使它更有趣!.
- *
  * 如果想开始执行这个游戏，用户需要创建Game类的一个实例并调用“play”方法。
- *
  * Game类的实例将创建并初始化所有其他类:它创建所有房间，并将它们连接成迷宫；它创建解析器
  * 接收用户输入，并将用户输入转换成命令后开始运行游戏。
  *
@@ -13,10 +11,13 @@
  */
 package cn.edu.whut.sept.zuul;
 
+import java.util.HashMap;
+
 public class Game
 {
-    private Parser parser;
+    private final Parser parser;
     private Room currentRoom;
+    private final HashMap<String, CommandProcessor> commandProcessorHashMap;
 
     /**
      * 构造函数，创建游戏并初始化内部数据和解析器.
@@ -25,6 +26,11 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        commandProcessorHashMap = new HashMap<>();
+
+        commandProcessorHashMap.put("help", new HelpCommandProcessor());
+        commandProcessorHashMap.put("go", new GoCommandProcessor());
+        commandProcessorHashMap.put("quit", new QuitCommandProcessor());
     }
 
     /**
@@ -96,7 +102,7 @@ public class Game
      */
     private boolean processCommand(Command command)
     {
-        boolean wantToQuit = false;
+//        boolean wantToQuit = false;
 
         if(command.isUnknown()) {
             System.out.println("I don't know what you mean...");
@@ -104,17 +110,20 @@ public class Game
         }
 
         String commandWord = command.getCommandWord();
-        if (commandWord.equals("help")) {
-            printHelp();
+        var processor = commandProcessorHashMap.get(commandWord);
+        if (processor != null) {
+            return processor.process(command);
         }
-        else if (commandWord.equals("go")) {
-            goRoom(command);
-        }
-        else if (commandWord.equals("quit")) {
-            wantToQuit = quit(command);
-        }
+
         // else command not recognised.
-        return wantToQuit;
+        return false;
+
+//        switch (commandWord) {
+//            case "help" -> printHelp();
+//            case "go" -> goRoom(command);
+//            case "quit" -> wantToQuit = quit(command);
+//        }
+
     }
 
     // implementations of user commands:
@@ -171,6 +180,45 @@ public class Game
         }
         else {
             return true;  // signal that we want to quit
+        }
+    }
+
+    /**
+     *
+     * @return {@code Game}类中保存的有效指令及其处理类的{@code HashMap}对象{@code commandProcessorHashMap}
+     */
+    public HashMap<String, CommandProcessor> getCommandProcessorHashMap() { return commandProcessorHashMap; }
+
+    // 指令处理类
+    /**
+     * {@code help}指令的处理类
+     */
+    private class HelpCommandProcessor implements CommandProcessor {
+        @Override
+        public boolean process(Command command) {
+            printHelp();
+            return false;
+        }
+    }
+
+    /**
+     * {@code go}指令处理类
+     */
+    private class GoCommandProcessor implements CommandProcessor {
+        @Override
+        public boolean process(Command command) {
+            goRoom(command);
+            return false;
+        }
+    }
+
+    /**
+     * {@code quit}指令处理类
+     */
+    private class QuitCommandProcessor implements CommandProcessor {
+        @Override
+        public boolean process(Command command) {
+            return quit(command);
         }
     }
 }
