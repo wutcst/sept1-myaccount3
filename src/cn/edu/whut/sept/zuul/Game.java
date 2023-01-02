@@ -44,6 +44,7 @@ public class Game
 
         currentPlayer = null;
         playerList = null;
+        startRoom = null;
     }
 
     /**
