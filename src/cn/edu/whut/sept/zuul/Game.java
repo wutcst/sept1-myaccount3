@@ -1,6 +1,8 @@
 package cn.edu.whut.sept.zuul;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * {@code Game}类是“World-of-Zuul”应用程序的主类。
@@ -16,8 +18,10 @@ import java.util.HashMap;
 public class Game
 {
     private final Parser parser;
-    private Room currentRoom;
     private final HashMap<String, CommandProcessor> commandProcessorHashMap;
+    private Player currentPlayer;
+    private final ArrayList<Player> playerList;
+    private Room startRoom;
 
     /**
      * 构造函数，创建游戏并初始化内部数据和解析器.
@@ -31,6 +35,13 @@ public class Game
         commandProcessorHashMap.put("help", new HelpCommandProcessor());
         commandProcessorHashMap.put("go", new GoCommandProcessor());
         commandProcessorHashMap.put("quit", new QuitCommandProcessor());
+        commandProcessorHashMap.put("back", new BackCommandProcessor());
+        commandProcessorHashMap.put("register", new RegisterCommandProcessor());
+        commandProcessorHashMap.put("login", new LoginCommandProcessor());
+        commandProcessorHashMap.put("logout", new LogoutCommandProcessor());
+
+        currentPlayer = null;
+        playerList = new ArrayList<>();
     }
 
     /**
@@ -61,7 +72,7 @@ public class Game
 
         office.setExit("west", lab);
 
-        currentRoom = outside;  // start game outside
+        startRoom = outside;  // start game outside
     }
 
     /**
@@ -92,7 +103,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+//        System.out.println(currentRoom.getLongDescription());
     }
 
     /**
@@ -157,14 +168,16 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        Room nextRoom = currentPlayer.currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+            currentPlayer.currentRoom = nextRoom;
+            System.out.println(currentPlayer.currentRoom.getLongDescription());
+
+            currentPlayer.roomList.add(currentPlayer.currentRoom);
         }
     }
 
@@ -179,6 +192,7 @@ public class Game
             return false;
         }
         else {
+            currentPlayer = null;
             return true;  // signal that we want to quit
         }
     }
@@ -188,6 +202,12 @@ public class Game
      * @return {@code Game}类中保存的有效指令及其处理类的{@code HashMap}对象{@code commandProcessorHashMap}
      */
     public HashMap<String, CommandProcessor> getCommandProcessorHashMap() { return commandProcessorHashMap; }
+
+    /**
+     *
+     * @return 玩家最初所在的 {@code Room}对象
+     */
+    public Room getStartRoom() { return startRoom; }
 
     // 指令处理类
     /**
@@ -207,6 +227,10 @@ public class Game
     private class GoCommandProcessor implements CommandProcessor {
         @Override
         public boolean process(Command command) {
+            if (currentPlayer == null) {
+                System.out.println("Please log in!");
+                return false;
+            }
             goRoom(command);
             return false;
         }
@@ -219,6 +243,106 @@ public class Game
         @Override
         public boolean process(Command command) {
             return quit(command);
+        }
+    }
+
+    /**
+     * {@code back}指令处理类
+     */
+    private class BackCommandProcessor implements CommandProcessor {
+        @Override
+        public boolean process(Command command) {
+            if (currentPlayer == null) {
+                System.out.println("Please log in!");
+                return false;
+            }
+
+            if (currentPlayer.roomList.size() <= 1) {
+                System.out.println("No previous room!");
+            } else {
+                currentPlayer.roomList.remove(currentPlayer.roomList.size() - 1);
+                currentPlayer.currentRoom = currentPlayer.roomList.get(currentPlayer.roomList.size() - 1);
+            }
+            System.out.println(currentPlayer.currentRoom.getLongDescription());
+            return false;
+        }
+    }
+
+    /**
+     * {@code register}指令处理类，玩家注册
+     */
+    private class RegisterCommandProcessor implements CommandProcessor {
+        @Override
+        public boolean process(Command command) {
+            if (currentPlayer != null) {
+                System.out.println("Please logout first!");
+                return false;
+            }
+
+            System.out.println("Enter name and password to register");
+            System.out.print("name:");
+
+            Scanner scanner = new Scanner(System.in);
+            String name = scanner.nextLine();
+            System.out.print("password:");
+            String password = scanner.nextLine();
+
+            playerList.add(new Player(name, password));
+            System.out.println("Successfully registered!");
+
+            return false;
+        }
+    }
+
+    /**
+     * {@code login}指令处理类，玩家登录
+     */
+    private class LoginCommandProcessor implements CommandProcessor {
+        @Override
+        public boolean process(Command command) {
+            System.out.println("Enter name and password to log in");
+            System.out.print("name:");
+
+            Scanner scanner = new Scanner(System.in);
+            String name = scanner.nextLine();
+            System.out.print("password:");
+            String password = scanner.nextLine();
+
+            boolean found = false;
+            for (var player: playerList) {
+                if (player.getName().equals(name) && player.getPassword().equals(password)) {
+                    found = true;
+                    currentPlayer = player;
+                    System.out.println("Successfully logged in!");
+                    System.out.println(player.currentRoom.getLongDescription());
+                    break;
+                }
+            }
+
+            if (!found) {
+                System.out.println("User not found! Unable to log in!");
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * {@code logout}指令处理类，玩家登出
+     */
+    private class LogoutCommandProcessor implements CommandProcessor {
+        @Override
+        public boolean process(Command command) {
+            if (currentPlayer == null) {
+                System.out.println("Not logged in! Unable to log out!");
+                return false;
+            }
+
+            currentPlayer.reset();
+            currentPlayer = null;
+            System.out.println("Successfully logged out!");
+
+            return false;
         }
     }
 }
