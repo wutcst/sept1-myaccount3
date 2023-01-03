@@ -216,6 +216,14 @@ public class Game
 
     /**
      *
+     * @return {@code Game}类中保存的已经注册的{@code Player}对象的{@code ArrayList<Player>}集合。
+     */
+    public ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
+
+    /**
+     *
      * @return 玩家最初所在的 {@code Room}对象
      */
     public Room getStartRoom() { return startRoom; }

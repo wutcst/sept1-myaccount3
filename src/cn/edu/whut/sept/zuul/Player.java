@@ -33,6 +33,9 @@ public class Player {
 
     public String getPassword() { return password; }
 
+    public Room getCurrentRoom() { return currentRoom; }
+    public ArrayList<Room> getRoomList() { return roomList; }
+
     public void reset(boolean isGUI) {
         if (!isGUI) {
             currentRoom = Main.currentGame.getStartRoom();
