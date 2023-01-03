@@ -2,6 +2,9 @@ package cn.edu.whut.sept.zuul.mysql;
 
 import java.sql.*;
 
+/**
+ * 数据库操作工具类。
+ */
 public class DatabaseUtil {
     /**
      * 数据库驱动

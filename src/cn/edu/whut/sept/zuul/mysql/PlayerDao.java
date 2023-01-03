@@ -8,7 +8,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * 使{@code Player}类与数据库交互。
+ */
 public class PlayerDao {
+    /**
+     * 从数据库中查找并返回所有已注册的用户。
+     * @param isGUI 是否在GUI中调用，若是则为{@code true}，不是则为{@code false}
+     * @return 所有已注册的用户
+     */
     public static ArrayList<Player> searchAllPlayers(boolean isGUI) {
         Connection connection = null;
         ArrayList<Player> playerArrayList = new ArrayList<>();
@@ -36,6 +44,10 @@ public class PlayerDao {
         return playerArrayList;
     }
 
+    /**
+     * 在数据库中新增一个{@code Player}对象。
+     * @param player 新增的{@code Player}对象
+     */
     public static void insertPlayer(Player player) {
         Connection connection = null;
 
