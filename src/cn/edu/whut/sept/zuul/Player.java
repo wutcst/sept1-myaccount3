@@ -1,5 +1,7 @@
 package cn.edu.whut.sept.zuul;
 
+import cn.edu.whut.sept.zuul.GUI.MainGUI;
+
 import java.util.ArrayList;
 
 /**
@@ -9,24 +11,37 @@ public class Player {
     private final String name;
     private final String password;
     public Room currentRoom;
-    public final ArrayList<Room> roomList;
+    public ArrayList<Room> roomList;
 
-    public Player(String name, String password) {
+    public Player(String name, String password, boolean isGUI) {
         this.name = name;
         this.password = password;
 
-        currentRoom = Main.currentGame.getStartRoom();
-        roomList = new ArrayList<>();
-        roomList.add(Main.currentGame.getStartRoom());
+        if (!isGUI) {
+            currentRoom = Main.currentGame.getStartRoom();
+            roomList = new ArrayList<>();
+            roomList.add(Main.currentGame.getStartRoom());
+        } else {
+            currentRoom = MainGUI.currentGameGUI.getStartRoom();
+            roomList = new ArrayList<>();
+            roomList.add(MainGUI.currentGameGUI.getStartRoom());
+        }
+
     }
 
     public String getName() { return name; }
 
     public String getPassword() { return password; }
 
-    public void reset() {
-        currentRoom = Main.currentGame.getStartRoom();
-        roomList.clear();
-        roomList.add(Main.currentGame.getStartRoom());
+    public void reset(boolean isGUI) {
+        if (!isGUI) {
+            currentRoom = Main.currentGame.getStartRoom();
+            roomList.clear();
+            roomList.add(Main.currentGame.getStartRoom());
+        } else {
+            currentRoom = MainGUI.currentGameGUI.getStartRoom();
+            roomList.clear();
+            roomList.add(MainGUI.currentGameGUI.getStartRoom());
+        }
     }
 }

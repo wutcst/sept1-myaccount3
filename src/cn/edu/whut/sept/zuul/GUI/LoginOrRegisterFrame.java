@@ -1,41 +1,37 @@
 package cn.edu.whut.sept.zuul.GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import cn.edu.whut.sept.zuul.Player;
+import cn.edu.whut.sept.zuul.mysql.PlayerDao;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.GroupLayout;
+import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class LoginOrRegisterFrame extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField nameTextField;
-	private JPasswordField passwordField;
+	private final JTextField nameTextField;
+	private final JPasswordField passwordField;
+//	private LoginOrRegisterFrame frame;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginOrRegisterFrame frame = new LoginOrRegisterFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			@Override
+//			public void run() {
+//				try {
+//					frame = new LoginOrRegisterFrame();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -44,7 +40,7 @@ public class LoginOrRegisterFrame extends JFrame {
 		setTitle("Log in/Register");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 317, 253);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
@@ -60,9 +56,11 @@ public class LoginOrRegisterFrame extends JFrame {
 		passwordField = new JPasswordField();
 		
 		JButton loginButton = new JButton("Log in");
+		loginButton.addActionListener(this::loginActionPerformed);
 		loginButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		
 		JButton registerButton = new JButton("Register");
+		registerButton.addActionListener(this::registerActionPerformed);
 		registerButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -106,5 +104,44 @@ public class LoginOrRegisterFrame extends JFrame {
 					.addContainerGap(85, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
+	}
+	
+	public void loginActionPerformed(ActionEvent e) {
+		String name = nameTextField.getText();
+		String password = new String(passwordField.getPassword());
+		
+		boolean found = false;
+        for (var player: MainGUI.currentGameGUI.getPlayerList()) {
+            if (player.getName().equals(name) && player.getPassword().equals(password)) {
+                found = true;
+//                currentPlayer = player;
+                MainGUI.currentGameGUI.setCurrentPlayer(player);
+
+				this.setVisible(false);
+				new GameFrame().setVisible(true);
+
+                break;
+            }
+        }
+
+		if (!found) {
+			JOptionPane.showMessageDialog(null, "User not found! Unable to log in!");
+		}
+	}
+	
+	public void registerActionPerformed(ActionEvent e) {
+		try {
+			String name = nameTextField.getText();
+			String password = new String(passwordField.getPassword());
+			
+			var player = new Player(name, password, true);
+			MainGUI.currentGameGUI.getPlayerList().add(player);
+			PlayerDao.insertPlayer(player);
+			
+			JOptionPane.showMessageDialog(null, "Successfully registered!");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Unable to register!");
+		}
 	}
 }

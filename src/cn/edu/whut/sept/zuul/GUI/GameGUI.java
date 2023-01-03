@@ -1,13 +1,10 @@
 package cn.edu.whut.sept.zuul.GUI;
 
-import cn.edu.whut.sept.zuul.Parser;
 import cn.edu.whut.sept.zuul.Player;
 import cn.edu.whut.sept.zuul.Room;
 import cn.edu.whut.sept.zuul.mysql.PlayerDao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
 
 /**
  * {@code Game}类是“World-of-Zuul”应用程序的主类。
@@ -22,11 +19,13 @@ import java.util.Scanner;
  */
 public class GameGUI
 {
-    private final Parser parser;
+//    private final Parser parser;
 //    private final HashMap<String, CommandProcessor> commandProcessorHashMap;
     private Player currentPlayer;
     private ArrayList<Player> playerList;
     private Room startRoom;
+//    private LoginOrRegisterFrame loginOrRegisterFrame;
+//    private GameFrame gameFrame;
 
     /**
      * 构造函数，创建游戏并初始化内部数据和解析器.
@@ -34,7 +33,7 @@ public class GameGUI
     public GameGUI()
     {
         createRooms();
-        parser = new Parser();
+//        parser = new Parser();
 //        commandProcessorHashMap = new HashMap<>();
 //
 //        commandProcessorHashMap.put("help", new HelpCommandProcessor());
@@ -45,9 +44,9 @@ public class GameGUI
 //        commandProcessorHashMap.put("login", new LoginCommandProcessor());
 //        commandProcessorHashMap.put("logout", new LogoutCommandProcessor());
 
-        currentPlayer = null;
-        playerList = null;
-        startRoom = null;
+//        currentPlayer = null;
+//        playerList = null;
+//        startRoom = null;
     }
 
     /**
@@ -55,7 +54,7 @@ public class GameGUI
      * 将该方法放在{@code Game()}构造函数外面，避免{@code main}函数中{@code Game}对象未返回而造成{@code NullPointerException}。
      */
     public void playerListInit() {
-        playerList = PlayerDao.searchAllPlayers();
+        playerList = PlayerDao.searchAllPlayers(true);
     }
 
     /**
@@ -107,5 +106,19 @@ public class GameGUI
 //        }
 //        System.out.println("Thank you for playing.  Good bye.");
     }
+    
+    public ArrayList<Player> getPlayerList() {
+		return playerList;
+	}
+    
+    public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+    
+    public void setCurrentPlayer(Player player) {
+		currentPlayer = player;
+	}
+
+    public Room getStartRoom() { return startRoom; }
 
 }

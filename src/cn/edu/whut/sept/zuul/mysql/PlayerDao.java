@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PlayerDao {
-    public static ArrayList<Player> searchAllPlayers() {
+    public static ArrayList<Player> searchAllPlayers(boolean isGUI) {
         Connection connection = null;
         ArrayList<Player> playerArrayList = new ArrayList<>();
 
@@ -24,7 +24,7 @@ public class PlayerDao {
                 String name = resultSet.getString("name");
                 String password = resultSet.getString("password");
 
-                playerArrayList.add(new Player(name, password));
+                playerArrayList.add(new Player(name, password, isGUI));
             }
 
         } catch (SQLException | ClassNotFoundException e) {

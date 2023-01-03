@@ -42,9 +42,9 @@ public class Game
         commandProcessorHashMap.put("login", new LoginCommandProcessor());
         commandProcessorHashMap.put("logout", new LogoutCommandProcessor());
 
-        currentPlayer = null;
-        playerList = null;
-        startRoom = null;
+//        currentPlayer = null;
+//        playerList = null;
+//        startRoom = null;
     }
 
     /**
@@ -52,7 +52,7 @@ public class Game
      * 将该方法放在{@code Game()}构造函数外面，避免{@code main}函数中{@code Game}对象未返回而造成{@code NullPointerException}。
      */
     public void playerListInit() {
-        playerList = PlayerDao.searchAllPlayers();
+        playerList = PlayerDao.searchAllPlayers(false);
     }
 
     /**
@@ -298,7 +298,7 @@ public class Game
             System.out.print("password:");
             String password = scanner.nextLine();
 
-            var player = new Player(name, password);
+            var player = new Player(name, password, false);
             playerList.add(player);
             PlayerDao.insertPlayer(player); // 玩家数据写入数据库
 
@@ -352,7 +352,7 @@ public class Game
                 return false;
             }
 
-            currentPlayer.reset();
+            currentPlayer.reset(false);
             currentPlayer = null;
             System.out.println("Successfully logged out!");
 
