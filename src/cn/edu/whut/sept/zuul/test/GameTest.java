@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * 测试{@code Game}类中的方法。
+ */
 class GameTest {
 
     @BeforeEach

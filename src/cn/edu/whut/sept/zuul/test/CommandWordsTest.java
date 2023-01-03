@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * 测试{@code CommandWords}类中的方法。
+ */
 class CommandWordsTest {
 
     @BeforeEach

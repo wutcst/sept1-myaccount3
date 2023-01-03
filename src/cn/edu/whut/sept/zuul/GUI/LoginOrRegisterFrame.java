@@ -10,6 +10,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * 用户登录及注册界面，提供登录、注册功能。
+ */
 public class LoginOrRegisterFrame extends JFrame {
 
 	private final JTextField nameTextField;
@@ -34,7 +37,7 @@ public class LoginOrRegisterFrame extends JFrame {
 //	}
 
 	/**
-	 * Create the frame.
+	 * 使用图形界面设计工具{@code WindowBuilder}生成的{@code LoginOrRegisterFrame}构造函数。
 	 */
 	public LoginOrRegisterFrame() {
 		setTitle("Log in/Register");
@@ -105,14 +108,20 @@ public class LoginOrRegisterFrame extends JFrame {
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
-	
+
+	/**
+	 * 用户登录功能实现，相当于控制台应用中的{@code CommandProcessor}对象。
+	 * @param e {@code ActionEvent}对象
+	 */
 	public void loginActionPerformed(ActionEvent e) {
 		String name = nameTextField.getText();
 		String password = new String(passwordField.getPassword());
-		
+
+		// 在注册过的玩家中查找name和password和输入的name、password相同的玩家
 		boolean found = false;
         for (var player: MainGUI.currentGameGUI.getPlayerList()) {
             if (player.getName().equals(name) && player.getPassword().equals(password)) {
+				// 找到玩家
                 found = true;
 //                currentPlayer = player;
                 MainGUI.currentGameGUI.setCurrentPlayer(player);
@@ -125,10 +134,15 @@ public class LoginOrRegisterFrame extends JFrame {
         }
 
 		if (!found) {
+			// 显示提示框
 			JOptionPane.showMessageDialog(null, "User not found! Unable to log in!");
 		}
 	}
-	
+
+	/**
+	 * 用户注册功能实现，相当于控制台应用中的{@code CommandProcessor}对象。
+	 * @param e {@code ActionEvent}对象
+	 */
 	public void registerActionPerformed(ActionEvent e) {
 		try {
 			String name = nameTextField.getText();
@@ -137,10 +151,13 @@ public class LoginOrRegisterFrame extends JFrame {
 			var player = new Player(name, password, true);
 			MainGUI.currentGameGUI.getPlayerList().add(player);
 			PlayerDao.insertPlayer(player);
-			
+
+			// 显示提示框
 			JOptionPane.showMessageDialog(null, "Successfully registered!");
 		} catch (Exception ex) {
 			ex.printStackTrace();
+
+			// 显示提示框
 			JOptionPane.showMessageDialog(null, "Unable to register!");
 		}
 	}
